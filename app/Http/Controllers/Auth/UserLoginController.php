@@ -53,7 +53,7 @@ class UserLoginController extends Controller
 
         if (Auth::guard("cons")->attempt($credentials)) {
             // Authentication passed...
-            return redirect()->intended('/dasboard');
+            return redirect()->intended('/dashboard');
         }
 
         $errors = new MessageBag();

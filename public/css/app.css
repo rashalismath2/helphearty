@@ -45,8 +45,7 @@ body {
 }
 
 nav {
-  max-height: 55px;
-  height: 15%;
+  height: 55px;
 }
 
 nav > div {
@@ -98,11 +97,21 @@ nav > div::after {
 }
 
 #chat-cont {
-  height: 85%;
+  height: 100%;
 }
 
 .chat-cont {
   height: 100%;
+}
+
+.const-chat-cont {
+  height: 100%;
+  width: 25%;
+  float: left;
+}
+
+#const-chat-cont {
+  height: calc(100% - (55px));
 }
 
 .select-user-cont {
@@ -112,6 +121,16 @@ nav > div::after {
   text-align: center;
   padding: 15px;
   width: 25%;
+  height: 100%;
+}
+
+.const-select-user-cont {
+  display: inline;
+  border-right: 1px solid;
+  float: left;
+  text-align: center;
+  padding: 15px;
+  width: 100%;
   height: 100%;
 }
 
@@ -137,6 +156,7 @@ nav > div::after {
 
 .messages-header {
   padding: 15px;
+  height: 45px;
 }
 
 .messages-header > p {
@@ -156,7 +176,7 @@ nav > div::after {
 
 .messages-body-cont {
   padding: 0 15px 0 15px;
-  height: 100%;
+  height: calc(100% - (45px));
 }
 
 .messages-cont {
@@ -168,8 +188,10 @@ nav > div::after {
 }
 
 .message-text-cont {
-  height: 85%;
+  height: calc(100% - (35px));
   padding-right: 15px;
+  overflow-x: scroll;
+  overflow-y: unset;
 }
 
 .message {
@@ -229,14 +251,13 @@ nav > div::after {
 .user-det-cont {
   float: right;
   overflow-y: scroll;
+  overflow-x: hidden;
   height: 100%;
   width: 25%;
 }
 
 .message-send-text-cont {
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
-  height: fit-content;
+  height: 35px;
   padding-right: 15px;
 }
 

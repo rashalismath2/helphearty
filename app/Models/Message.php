@@ -9,6 +9,11 @@ class Message extends Model
 {
     use HasFactory;
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     public $timestamps = true;
     
     public function user()
