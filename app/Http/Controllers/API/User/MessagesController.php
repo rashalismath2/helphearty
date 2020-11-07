@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Message;
 
+use App\Events\MessageSent;
+
 class MessagesController extends Controller
 {
     public function GetConversationWithConsultant(Request $request){
@@ -28,7 +30,7 @@ class MessagesController extends Controller
         $message->from="user";
 
         $message->save();
-
+        broadcast(new MessageSent($message))->toOthers();
         return response()->json(["message"=>"message created"]);
     }
 }

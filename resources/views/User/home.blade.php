@@ -14,6 +14,7 @@
             super(props)
             this.state={
                 user:{
+                    id:"",
                     consultant:{
                         profile_id:""
                     }
@@ -32,6 +33,13 @@
                 .catch(e=>{
                     console.log(e)
                 })
+
+                if(this.state.user.id!=""){
+                    Echo.private("messageFrom-cons-toId-"+this.state.user.id)
+                    .listen('MessageSent', (e) => {
+                        console.log(e)
+                    });
+                }
         }
 
         setText=(e)=>{

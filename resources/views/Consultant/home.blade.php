@@ -13,7 +13,9 @@
         constructor(props){
             super(props)
             this.state={
-                consultant:{ },
+                consultant:{
+                    id:""
+                 },
                 message:"",
                 selectedUser:""
             }
@@ -30,6 +32,13 @@
                 .catch(e=>{
                     console.log(e)
                 })
+
+                if(this.state.consultant.id!=""){
+                    Echo.private("messageFrom-user-toId-"+this.state.consultant.id)
+                    .listen('MessageSent', (e) => {
+                        console.log(e)
+                    });
+                }
         }
 
         setText=(e)=>{
