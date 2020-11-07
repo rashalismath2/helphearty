@@ -3,8 +3,8 @@
 @section('content')
 <div class="cont">
     <div class="cont-left">
-        <h2>HelpHearty,</h2>
-        <p class="">
+        <h2 class="help-hearty-text">HelpHearty,</h2>
+        <p class="help-heart-intro">
             <span class=""
               >will help you to find a professional consultant whos prepared to
               listen to you and help you.</span
@@ -20,11 +20,15 @@
     <div class="cont-right">
         <img src="{{asset('/img/intr-img.jpg')}}" alt="" srcset="">
         <div id="auth-buttons">
-            <button>SignUp</button>
-            <button>SignIn</button>
+            <a href="{{route('register-view')}}"><i class="fas fa-user-plus fa-md"></i> Register</a>
+            <a href="{{route('login-view')}}"><i class="fas fa-sign-in-alt fa-md"></i> Login</a>
         </div>
     </div>
-</div>    
+</div>
+
+<div class="cont">
+    @include('Home.need')    
+</div>
 
 
 @endsection

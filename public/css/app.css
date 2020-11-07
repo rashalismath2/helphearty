@@ -8,6 +8,16 @@ body {
   height: 100%;
 }
 
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.shadow {
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.9);
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -31,21 +41,71 @@ body {
 }
 
 .cont {
-  margin: 0 15px;
+  padding: 15px 15px;
+  height: calc(80vh - (55px));
+  width: 100%;
 }
 
-.clearfix::after {
-  content: "";
-  display: block;
-  clear: both;
+.cont-left {
+  display: inline;
+  float: left;
+  width: 50%;
 }
 
-.shadow {
-  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.9);
+.cont-right {
+  display: inline;
+  float: right;
+  width: 50%;
+}
+
+.cont-right img {
+  width: 100%;
+}
+
+.help-hearty-text {
+  font-size: 1.5rem;
+  font-style: italic;
+  color: #22b527;
+}
+
+.help-heart-intro {
+  text-align: justify;
+  font-size: 1.2rem;
+  font-family: sans-serif;
+}
+
+.help-heart-intro span {
+  padding-left: 20px;
+}
+
+#auth-buttons {
+  text-align: center;
+}
+
+#auth-buttons a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+#auth-buttons a {
+  border: 0;
+  text-decoration: none;
+  padding: 8px;
+  margin: 5px 15px;
+  background: #22b527;
+  color: white;
+  width: 85px;
+  height: 37px;
+  border-radius: 5px;
+  font-family: sans-serif;
 }
 
 nav {
   height: 55px;
+}
+
+.nav-cont {
+  padding: 0 15px;
 }
 
 nav > div {
@@ -79,6 +139,7 @@ nav > div::after {
 }
 
 .nav-button span {
+  margin-left: 15px;
   margin-right: 5px;
 }
 
@@ -89,11 +150,22 @@ nav > div::after {
   background: #22b527;
   color: white;
   border-radius: 5px;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
+  width: 85px;
+  text-decoration: none;
+  /* height: 28px; */
+  padding: 5px 0px 5px 15px;
+  padding-top: px;
   font-family: sans-serif;
   font-weight: bold;
+}
+
+.nav-button:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.list-item {
+  width: 50%;
 }
 
 #chat-cont {

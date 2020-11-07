@@ -1,5 +1,5 @@
 <nav class="shadow">
-    <div class="cont">
+    <div class="nav-cont">
         <p class="logo"><a href="{{route('welcome')}}">HelpHearty</a></p>
         @if(Auth::guard('web')->check())
             <div class="dropdown">
@@ -32,7 +32,7 @@
         @endif
 
         @if (!Auth::check())
-            <Button class="nav-button"><i class="fas fa-user fa-md"></i> Staff</Button>
+            <a class="nav-button" target="_blank" href="{{route('login-view-cons')}}"><i class="fas fa-user fa-md"></i> Staff</a>
         @endif
 
     </div>
