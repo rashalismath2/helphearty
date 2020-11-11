@@ -3,11 +3,11 @@
 @section('content')
 
     <div id="chat-cont">
-      
+        
     </div>
 
 <script type="text/babel">
-
+    
     class Messages extends React.Component{
 
         constructor(props){
@@ -24,22 +24,48 @@
         }
 
         componentDidMount(){
-            axios.get("/api/user/messages")
+            //get acces token
+            //after set it in localstorage and get all the messages using token
+            //then listen on private channel for messages
+            axios.post("/api/getAcessToken",{
+                guard:"web",
+                email:document.getElementById("userEmail").value
+            })
+            .then(res=>{
+                localStorage.setItem("api_token", res.data.api_token)
+                axios.get("/api/user/messages",{
+                        headers: { Authorization: `Bearer ${res.data.api_token}`}
+                    })
                 .then(data=>{
                     this.setState({
                         user:data.data
                     })
+                    Echo.connector.pusher.config.auth.headers['Authorization'] = `Bearer ${localStorage.getItem("api_token")}`;
+                    Echo.private("messageFrom-cons-toId-"+this.state.user.id)
+                        .listen('MessageSent', (e) => {
+
+                            this.setState({
+                                ...this.state,
+                                user:{
+                                    ...this.state.user,
+                                    messages:[...this.state.user.messages,{
+                                        id:e.message.id,
+                                        from:"consultant",
+                                        message:e.message.message
+                                    }]
+                                }    
+                            })
+                        });
+
                 })
                 .catch(e=>{
                     console.log(e)
                 })
+            })
+            .catch(e=>{
+                console.error(e)
+            })
 
-                if(this.state.user.id!=""){
-                    Echo.private("messageFrom-cons-toId-"+this.state.user.id)
-                    .listen('MessageSent', (e) => {
-                        console.log(e)
-                    });
-                }
         }
 
         setText=(e)=>{
@@ -52,7 +78,9 @@
                 e.preventDefault()
                 axios.post("/api/user/messages",{
                     message:this.state.message
-                })
+                },{
+                        headers: { Authorization: `Bearer ${localStorage.getItem("api_token")}`}
+                    })
                 .then(res=>{
 
                     this.setState({
@@ -66,7 +94,6 @@
                             }]
                         }    
                     })
-                    console.log(res)
                 })
                 .catch(e=>{
                     console.log(e)

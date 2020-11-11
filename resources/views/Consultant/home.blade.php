@@ -22,23 +22,49 @@
         }
  
         componentDidMount(){
-            axios.get("/api/consultant/messages")
+            axios.post("/api/getAcessToken",{
+                guard:"cons",
+                email:document.getElementById("consEmail").value
+            })
+            .then(res=>{
+                localStorage.setItem("api_token", res.data.api_token)
+                axios.get("/api/consultant/messages",{
+                    headers: { Authorization: `Bearer ${res.data.api_token}`}
+                })
                 .then(res=>{
-                   console.log(res)
                     this.setState({
                         consultant:res.data
                     })
+                    Echo.connector.pusher.config.auth.headers['Authorization'] = `Bearer ${localStorage.getItem("api_token")}`;
+                    Echo.private("messageFrom-user-toId-"+this.state.consultant.id)
+                    .listen('MessageSent', (e) => {
+
+                        var messages=this.state.selectedUser.messages
+                        //push new message
+                        messages.push({
+                                    id:Math.random()*10,
+                                    from:"user",
+                                    message:e.message.message
+                        })
+                        //get selected user
+                        var user=this.state.selectedUser
+                        user.messages=messages
+                        //set its new messages with new messatge we saved
+                        //then add user to the state
+                    
+                        this.setState({
+                            ...this.state,
+                            selectedUser:user
+                        })
+                    });
                 })
                 .catch(e=>{
                     console.log(e)
                 })
-
-                if(this.state.consultant.id!=""){
-                    Echo.private("messageFrom-user-toId-"+this.state.consultant.id)
-                    .listen('MessageSent', (e) => {
-                        console.log(e)
-                    });
-                }
+            })
+            .catch(e=>{
+                console.log(e)
+            })
         }
 
         setText=(e)=>{
@@ -52,6 +78,8 @@
                 axios.post("/api/consultant/messages",{
                     message:this.state.message,
                     userId:this.state.selectedUser.id
+                },{
+                        headers: { Authorization: `Bearer ${localStorage.getItem("api_token")}`}
                 })
                 .then(res=>{
                     //get selected user messatges
@@ -68,12 +96,11 @@
                     //set its new messages with new messatge we saved
                     //then add user to the state
                 
-
                     this.setState({
                         ...this.state,
                         selectedUser:user
                     })
-                    console.log(res)
+
                 })
                 .catch(err=>{
                     console.log(err)

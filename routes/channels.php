@@ -15,14 +15,14 @@ use App\Models\User;
 |
 */
 
-Broadcast::channel('messageFrom-{user_type}-toId-{userId}', function ($user, $user_type,$user_id) {
-    if($user_type=="user"){
-        //if user was the one sent the message, we should check if we have the correct consultant 
-        return User::where("id",$user_id)->first()->consultant===$user->id;        
-    }
-    else if($user_type=="cons"){
+Broadcast::channel('messageFrom-cons-toId-{userId}', function ($user,$userId) {
         //if the consultant was the one sent the messge we should check if he has the user hes sendoing
-        return User::where("consultant_id",$user_id)->first()->id===$user->id;
-    }
-});
+        return User::where("consultant_id",$userId)->where("id",$user->id)->first()->id===$user->id;
+} ,['guards' => ['api']]);
+
+Broadcast::channel('messageFrom-user-toId-{userId}', function ($user,$userId) {
+        //if user was the one sent the message, we should check if we have the correct consultant 
+        return $user->id===(int)$userId;        
+ 
+} ,['guards' => ['consapi']]);
 

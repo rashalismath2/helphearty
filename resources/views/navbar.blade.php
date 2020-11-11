@@ -14,6 +14,7 @@
                         <button class="dropdown-item" >Logout</button>
                     </form>
                 </div>
+                <input id="userEmail" type="hidden" value="{{Auth::guard('web')->user()->email}}" name="userEmail">
             </div>
         @elseif(Auth::guard('cons')->check())
             <div class="dropdown">
@@ -28,6 +29,7 @@
                         <button class="dropdown-item" >Logout</button>
                     </form>
                 </div>
+                <input id="consEmail" type="hidden" value="{{Auth::guard('cons')->user()->email}}" name="consEmail">
             </div>
         @endif
 

@@ -14,26 +14,26 @@ use App\Events\MessageSent;
 
 class MessageController extends Controller
 {
+    public function __construct(){
+        $this->middleware("auth:consapi");
+    }
     public function GetConversationWithUsers(Request $request){
-        //TODO - authenticated use messages
-        //Middle ware to redirtect user if he hadnt have a consultatn
-        $messages=Consultant::where("id",1)->with("users.messages")->first();
+
+        $messages=Consultant::where("id",auth()->user()->id)->with("users.messages")->first();
         return response()->json($messages);
     }
 
     public function SaveConversationWithUser(Request $request){
-        //TODO - authenticated use messages
-        //Middle ware to redirtect user if he hadnt have a consultatn
         
         $message=new Message();
         $message->message=$request->message;
-        $message->consultant_id=1;
+        $message->consultant_id=auth()->user()->id;
         $message->user_id=$request->userId;
         $message->from="consultant";
 
         $message->save();
         
-        broadcast(new MessageSent($message))->toOthers();
+        broadcast(new MessageSent($message,auth()->user(),"cons"))->toOthers();
         return response()->json(["message"=>"message created"]);
     }
 }

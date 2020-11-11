@@ -21,16 +21,12 @@ class MessageSent implements ShouldBroadcast
     public $message;
     private $user_type;
 
-    public function __construct(Message $message)
+    public function __construct(Message $message,$user,$user_type)
     {
         $this->message=$message;
-        $this->user=auth()->user();
-        if(Auth::guard("web")->check()){
-            $this->user_type="user";
-        }
-        else if(Auth::guard("cons")->check()){
-            $this->user_type="cons";
-        }
+        $this->user=$user;
+        $this->user_type=$user_type;
+
 
     }
 

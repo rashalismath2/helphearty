@@ -9,6 +9,9 @@ use Illuminate\Support\MessageBag;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Models\User;
+use App\Models\Consultant;
+
 class UserLoginController extends Controller
 {
     public function __construct(){
@@ -22,6 +25,26 @@ class UserLoginController extends Controller
         return view("Consultant/Auth/Login");
     }
 
+    public function getAccessTokenForUser(Request $request){
+        $user=User::where("email",$request->email)->first();
+    }
+
+    public function getAcessToken(Request $request){
+        $guard=$request->guard;
+        if($guard=="web"){
+            $user=User::where("email",$request->email)->first();
+            
+            $token = $user->createToken('access_token')->accessToken;
+            return response()->json(["api_token"=>$token]);
+        }
+        else if($guard=="cons"){
+            $user=Consultant::where("email",$request->email)->first();
+            
+            $token = $user->createToken('access_token')->accessToken;
+            return response()->json(["api_token"=>$token]);
+        }
+    }
+
     public function login(Request $request){
 
         $validatedData = $request->validate([
@@ -32,7 +55,7 @@ class UserLoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard("web")->attempt($credentials)) {
-            // Authentication passed...
+    
             return redirect()->intended('/home');
         }
 
@@ -52,7 +75,9 @@ class UserLoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard("cons")->attempt($credentials)) {
-            // Authentication passed...
+            $user=Auth::guard("cons")->user();
+            $token = $user->createToken('access_token')->accessToken;
+            
             return redirect()->intended('/dashboard');
         }
 

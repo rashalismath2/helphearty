@@ -3,8 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Auth\UserLoginController;
+
 use App\Http\Controllers\API\User\MessagesController;
 use App\Http\Controllers\API\Consultant\MessageController as ConsMessageController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,9 +19,7 @@ use App\Http\Controllers\API\Consultant\MessageController as ConsMessageControll
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 
 Route::prefix('user')->group(function () {
     Route::get("/messages",[MessagesController::class,"GetConversationWithConsultant"]);
@@ -29,3 +30,5 @@ Route::prefix('consultant')->group(function () {
     Route::get("/messages",[ConsMessageController::class,"GetConversationWithUsers"]);
     Route::post("/messages",[ConsMessageController::class,"SaveConversationWithUser"]);
 });
+
+Route::post("/getAcessToken",[UserLoginController::class,"getAcessToken"])->name("get_access_token");
