@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserLoginController;
 
 use App\Http\Controllers\API\User\MessagesController;
+use App\Http\Controllers\API\User\StreamController;
 use App\Http\Controllers\API\Consultant\MessageController as ConsMessageController;
+use App\Http\Controllers\API\Consultant\StreamController as ConsStreamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,11 +26,14 @@ use App\Http\Controllers\API\Consultant\MessageController as ConsMessageControll
 Route::prefix('user')->group(function () {
     Route::get("/messages",[MessagesController::class,"GetConversationWithConsultant"]);
     Route::post("/messages",[MessagesController::class,"SaveConversationWithConsultant"]);
+    Route::post("/send-offer",[StreamController::class,"sendOffer"]);
+
 });
 
 Route::prefix('consultant')->group(function () {
     Route::get("/messages",[ConsMessageController::class,"GetConversationWithUsers"]);
     Route::post("/messages",[ConsMessageController::class,"SaveConversationWithUser"]);
+    Route::post("/send-answer",[ConsStreamController::class,"sendAnswer"]);
 });
 
 Route::post("/getAcessToken",[UserLoginController::class,"getAcessToken"])->name("get_access_token");

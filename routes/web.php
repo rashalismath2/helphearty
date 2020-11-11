@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserLoginController;
 use App\Http\Controllers\Auth\UserRegisterController;
+use App\Http\Controllers\User\StreamController;
 
 
 Route::get('/', function () {
@@ -15,6 +16,7 @@ Route::get('/home', function () {
     return view('User/home');
 })->middleware(["auth"])->name("home");
 
+Route::get("/user/stream",[StreamController::class,"index"])->name("user-stream-view");
 
 
 // Authentication for users

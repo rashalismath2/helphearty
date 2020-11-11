@@ -16,11 +16,37 @@ use App\Models\User;
 */
 
 Broadcast::channel('messageFrom-cons-toId-{userId}', function ($user,$userId) {
+        
         //if the consultant was the one sent the messge we should check if he has the user hes sendoing
-        return User::where("consultant_id",$userId)->where("id",$user->id)->first()->id===$user->id;
+        return $user->id===(int)$userId;
 } ,['guards' => ['api']]);
 
 Broadcast::channel('messageFrom-user-toId-{userId}', function ($user,$userId) {
+        //if user was the one sent the message, we should check if we have the correct consultant 
+        return $user->id===(int)$userId;        
+ 
+} ,['guards' => ['consapi']]);
+
+
+//passing offers on video chat
+Broadcast::channel('offerFrom-cons-toId-{userId}', function ($user,$userId) {
+        //if the consultant was the one sent the offer we should check if he has the user hes sendoing
+        return $user->id===(int)$userId;
+} ,['guards' => ['api']]);
+
+Broadcast::channel('offerFrom-user-toId-{userId}', function ($user,$userId) {
+        //if user was the one sent the message, we should check if we have the correct consultant 
+        return $user->id===(int)$userId;        
+ 
+} ,['guards' => ['consapi']]);
+
+//passing answers on video chat
+Broadcast::channel('answerFrom-cons-toId-{userId}', function ($user,$userId) {
+        //if the consultant was the one sent the offer we should check if he has the user hes sendoing
+        return $user->id===(int)$userId;
+} ,['guards' => ['api']]);
+
+Broadcast::channel('offerFrom-user-toId-{userId}', function ($user,$userId) {
         //if user was the one sent the message, we should check if we have the correct consultant 
         return $user->id===(int)$userId;        
  

@@ -22,20 +22,47 @@
         }
  
         componentDidMount(){
+            // get access token, then set it in local storages, then getg all the messages, then listen to messaegs
+            this.getAccessToken()
+      
+
+        }
+
+         getAccessToken=()=>{
             axios.post("/api/getAcessToken",{
                 guard:"cons",
                 email:document.getElementById("consEmail").value
             })
             .then(res=>{
                 localStorage.setItem("api_token", res.data.api_token)
-                axios.get("/api/consultant/messages",{
+                //get all the conversations
+                this.getAllTheConversations(res)
+                
+            })
+            .catch(e=>{
+                console.log(e)
+            })
+        }
+
+        getAllTheConversations(res){
+            axios.get("/api/consultant/messages",{
                     headers: { Authorization: `Bearer ${res.data.api_token}`}
                 })
                 .then(res=>{
                     this.setState({
                         consultant:res.data
                     })
-                    Echo.connector.pusher.config.auth.headers['Authorization'] = `Bearer ${localStorage.getItem("api_token")}`;
+                    this.listenFoConsultantMessages();
+                    this.listenForStreamOffers()
+                })
+                .catch(e=>{
+                    console.log(e)
+                })
+        }
+
+        listenFoConsultantMessages(){
+            
+            Echo.connector.pusher.config.auth.headers['Authorization'] = `Bearer ${localStorage.getItem("api_token")}`;
                     Echo.private("messageFrom-user-toId-"+this.state.consultant.id)
                     .listen('MessageSent', (e) => {
 
@@ -57,14 +84,37 @@
                             selectedUser:user
                         })
                     });
+        }
+
+         listenForStreamOffers(){
+           
+                Echo.connector.pusher.config.auth.headers['Authorization'] = `Bearer ${localStorage.getItem("api_token")}`;
+                Echo.private("offerFrom-user-toId-"+this.state.consultant.id)
+                .listen('OfferSend',async (res) => {
+                    console.log("offer ",res.offer)
+                    const configuration=null
+                    
+                    const peerConnection = new RTCPeerConnection(configuration);
+                    
+                    await peerConnection.setRemoteDescription(new RTCSessionDescription(JSON.parse(res.offer)));
+                    
+                    const answer = await peerConnection.createAnswer();
+                    await peerConnection.setLocalDescription(answer);
+                    
+                    axios.post("/api/consultant/send-answer",{
+                        answer:answer,
+                        toId:res.user.id
+                    },{
+                        headers: { Authorization: `Bearer ${localStorage.getItem("api_token")}`}
+                    })
+                    .then(res=>{
+                        console.log(res)
+                    })
+                    .catch(err=>{
+                        console.error("Sending answer error in consultant ",err)
+                    })
                 })
-                .catch(e=>{
-                    console.log(e)
-                })
-            })
-            .catch(e=>{
-                console.log(e)
-            })
+
         }
 
         setText=(e)=>{

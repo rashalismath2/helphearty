@@ -374,3 +374,8 @@ textarea {
   padding-bottom: 15px;
 }
 
+#user-stream-cont {
+  width: 100%;
+  height: 100%;
+}
+

@@ -27,6 +27,7 @@
             //get acces token
             //after set it in localstorage and get all the messages using token
             //then listen on private channel for messages
+            // TODO-revoke user token, here we are getting an token for every refresh
             axios.post("/api/getAcessToken",{
                 guard:"web",
                 email:document.getElementById("userEmail").value
@@ -40,22 +41,8 @@
                     this.setState({
                         user:data.data
                     })
-                    Echo.connector.pusher.config.auth.headers['Authorization'] = `Bearer ${localStorage.getItem("api_token")}`;
-                    Echo.private("messageFrom-cons-toId-"+this.state.user.id)
-                        .listen('MessageSent', (e) => {
-
-                            this.setState({
-                                ...this.state,
-                                user:{
-                                    ...this.state.user,
-                                    messages:[...this.state.user.messages,{
-                                        id:e.message.id,
-                                        from:"consultant",
-                                        message:e.message.message
-                                    }]
-                                }    
-                            })
-                        });
+                    localStorage.setItem("user_id",this.state.user.id)
+                    this.listenFormessagesfromconsultant()
 
                 })
                 .catch(e=>{
@@ -66,6 +53,25 @@
                 console.error(e)
             })
 
+        }
+
+        listenFormessagesfromconsultant(){
+            Echo.connector.pusher.config.auth.headers['Authorization'] = `Bearer ${localStorage.getItem("api_token")}`;
+            Echo.private("messageFrom-cons-toId-"+this.state.user.id)
+                .listen('MessageSent', (e) => {
+
+                    this.setState({
+                        ...this.state,
+                        user:{
+                            ...this.state.user,
+                            messages:[...this.state.user.messages,{
+                                id:e.message.id,
+                                from:"consultant",
+                                message:e.message.message
+                            }]
+                        }    
+                    })
+            });
         }
 
         setText=(e)=>{
@@ -131,7 +137,7 @@
                             <p>{this.state.user.consultant.first_name}</p>
                             <div className="messages-options">
                                 <i className="fas fa-phone-square fa-lg"></i>
-                                <i className="fas fa-video fa-lg"></i>
+                                <a target="_blank" href="/user/stream"><i className="fas fa-video fa-lg"></i></a>
                             </div>
                         </div>
                         <div className="messages-body-cont clearfix">
