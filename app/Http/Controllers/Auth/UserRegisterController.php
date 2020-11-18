@@ -14,9 +14,7 @@ class UserRegisterController extends Controller
         $this->middleware("guest");
     }
 
-    public function showRegister(Request $request){
-        return view("User/Auth/Register");
-    }
+
     public function showRegisterForConsultant(Request $request){
         return view("Consultant/Auth/Register");
     }

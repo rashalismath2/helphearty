@@ -18,9 +18,7 @@ class UserLoginController extends Controller
         $this->middleware("guest",["except"=>["logout"]]);
     }
 
-    public function showLogin(){
-        return view("User/Auth/Login");
-    }
+   
     public function showLoginForConsultant(){
         return view("Consultant/Auth/Login");
     }
@@ -90,7 +88,7 @@ class UserLoginController extends Controller
     public function logout(Request $request){
         Auth::guard($request->guard)->logout();
         if($request->guard=="web"){
-            return redirect()->route("login-view");
+            return redirect()->route("welcome");
         }
         else{
             return redirect()->route("login-view-cons");

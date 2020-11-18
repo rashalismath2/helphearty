@@ -5,11 +5,9 @@ use App\Http\Controllers\Auth\UserLoginController;
 use App\Http\Controllers\Auth\UserRegisterController;
 use App\Http\Controllers\User\StreamController;
 use App\Http\Controllers\Consultant\StreamController as ConsultantStreamController;
+use App\Http\Controllers\WelcomeController;
 
-
-Route::get('/', function () {
-    return view('welcome');
-})->name("welcome");
+Route::get('/',[WelcomeController::class,"index"])->name("welcome");
  
 
 //User routes
@@ -20,8 +18,6 @@ Route::get('/home', function () {
 Route::get("/user/stream",[StreamController::class,"index"])->name("user-stream-view");
 
 // Authentication for users
-Route::get('/login',[ UserLoginController::class,"showLogin"])->name("login-view");
-Route::get('/register', [UserRegisterController::class,"showRegister"])->name("register-view");
 
 Route::post('/login',[UserLoginController::class,"login"])->name("login");
 Route::post('/register',[UserRegisterController::class,"register"])->name("register");

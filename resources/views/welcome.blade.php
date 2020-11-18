@@ -1,8 +1,8 @@
 @extends('template')
 
 @section('content')
-<div class="cont">
-    <div class="cont-left">
+<div class="cont clearfix">
+    <div class="cont-left intro-cont-left">
         <h2 class="help-hearty-text">HelpHearty,</h2>
         <p class="help-heart-intro">
             <span class=""
@@ -20,15 +20,28 @@
     <div class="cont-right">
         <img src="{{asset('/img/intr-img.jpg')}}" alt="" srcset="">
         <div id="auth-buttons">
-            <a href="{{route('register-view')}}"><i class="fas fa-user-plus fa-md"></i> Register</a>
-            <a href="{{route('login-view')}}"><i class="fas fa-sign-in-alt fa-md"></i> Login</a>
+           @if (!auth()->check())
+            <a class="auth-buttons" ><i class="fas fa-user-plus fa-md"></i> Register</a>
+            <a data-toggle="modal" data-target="#userLogin" class="auth-buttons" ><i class="fas fa-sign-in-alt fa-md"></i> Login</a>
+           @endif
         </div>
+        @include('User.Auth.Login')
     </div>
 </div>
 
-<div class="cont">
+<div class="cont clearfix">
     @include('Home.need')    
 </div>
+
+<div class="cont clearfix">
+    @include('Home.team')    
+</div>
+
+<div class="cont clearfix">
+    @include('Home.service')    
+</div>
+
+@include('footer')
 
 
 @endsection

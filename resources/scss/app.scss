@@ -6,6 +6,7 @@ html{
 body{
     margin:0;
     height: 100%;
+    height: fit-content;
 }
 
 .clearfix::after{
@@ -20,7 +21,9 @@ body{
 box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.9);
 }
 
+$main-green-dark:#38713a;
 $main-green:#22b527;
+
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -43,14 +46,23 @@ $main-green:#22b527;
 
 .cont{
     padding:15px 15px;
-    height: calc(80vh - (55px));
+    // height: calc(80vh - (55px));
+    height: fit-content;
     width: 100%;
 }
 .cont-left{
     display: inline;
     float: left;
     width: 50%;
+
+    text-align: justify;
+    font-size: 1.2rem;
+    font-family: sans-serif;
 }
+.intro-cont-left{
+    padding-top: 55px;
+}
+
 .cont-right{
     display: inline;
     float: right;
@@ -77,23 +89,152 @@ $main-green:#22b527;
 #auth-buttons{
     text-align: center;
 }
-#auth-buttons a:hover{
+.auth-buttons:hover{
     color: white;
     text-decoration: none;
 }
-#auth-buttons a{
+.auth-buttons {
     border: 0;
     text-decoration: none;
     padding: 8px;
+    cursor: pointer;
     margin: 5px 15px;
     background: $main-green;
-    color: white;
+    color: white !important;
     width: 85px;
     height: 37px;
     border-radius: 5px;
     font-family: sans-serif;
 }
 
+.modal-title{
+    color: $main-green;
+}
+
+#userLogin{
+
+}
+.login-content {
+    height: fit-content;
+}
+.login-content input{
+    display: block;
+    width: 280px;
+    text-align: center;
+    margin: 15px auto;
+}
+
+.main-cont-header{
+    font-size: 2rem;
+    color: $main-green;
+    text-align: center;
+}
+
+.home-need{
+    text-align: justify;
+    font-size: 1.2rem;
+    font-family: sans-serif;
+}
+.home-need span{
+    padding-left: 20px;
+}
+.need-list{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+.need-list li{    
+    padding-right: 55px;
+    text-align:justify;
+    font-family: cursive;
+    width: 50%;
+}
+.need-list p:nth-child(2){
+    margin-top: 5px;
+}
+
+
+// team
+
+.team-card{
+    background-color: $main-green;
+    padding: 15px;
+    color: white;
+}
+
+.team-desc{
+    padding-right: 45px;
+}
+.team-doc-education{
+    font-weight: bold;
+}
+.team-doc-img{
+    width: 150px !important;
+    height: 150px;
+    float: left;
+    border-radius: 520%;
+    margin-right: 45px;
+}
+.team-doc-name{
+    text-transform: capitalize;
+}
+.team-card-body{
+    float: right;
+    padding-top: 10px;
+    width: calc(100% - (195px));
+}
+
+
+//service
+.service-img{
+    width: 100%;
+    padding-right: 45px;
+}
+.service-cont-right{
+    
+    text-align: justify;
+    font-size: 1.2rem;
+    font-family: sans-serif;
+}
+.service-desc span:first-child{
+    padding-left: 20px;
+}
+.service-help-title{
+    text-align: center;
+    font-size: 2rem;
+    color: $main-green;
+}
+#service-help-getstarted{
+    height: 400px;
+    overflow-y: scroll;
+}
+
+.service-help-card{
+    padding: 15px;
+    margin-bottom: 10px;
+}
+.service-help-card .auth-buttons{
+    margin: 0;
+}
+
+.service-help-contents{
+    float: left;
+}
+.service-help-contents p:first-child{
+    font-weight: bold;
+}
+.service-help-number p{
+    margin: 0;
+}
+.service-help-number{
+    float: right;
+    width: 40px;
+    border-radius: 50%;
+    background: #737373;
+    height: 40px;
+    padding: 6px 0 0 13px;
+    color: white;
+}
 
 
 nav{
@@ -127,21 +268,45 @@ nav>div::after{
     color: inherit;
     text-decoration: none;
 }
+#nav-options{
+    float: right;
+}
+#nav-links-cont{
+    float: left;
+    padding-top: 5px;
+    margin-top: 15px;
+    display: inline;
+    margin-right: 35px;
+}
+#nav-links a{
+    margin-right: 15px;
+    color: black;
+    font-family: sans-serif;
+}
+#nav-links a:hover{
+    color:$main-green;
+    text-decoration: none;
+}
+
 .nav-button span{
     margin-left: 15px;
     margin-right: 5px;
 }
-.nav-button{
+.nav-button-cont{
     float: right;
+    display: inline;
+}
+.nav-button{
+    width: fit-content;
     margin-top: 15px;
     border: none;
+    float: right;
     background: #22b527;
     color: white;
     border-radius: 5px;
-    width: 85px;
     text-decoration: none;
     /* height: 28px; */
-    padding: 5px 0px 5px 15px;
+    padding: 5px 15px ;
     padding-top: px;
     font-family: sans-serif;
     font-weight: bold;
@@ -151,12 +316,87 @@ nav>div::after{
     text-decoration: none;
 }
 
-//home page nneds
-.list-item{
-    width: 50%;
+footer{
+    margin-top: 50px;
+}
+#footer-links-cont{
+    background-color: $main-green;
+}
+#footer-links-cont a{
+    color: white;
+}
+#footer-links-cont a:hover{
+    color: black;
+    text-decoration: none;
+}
+#footer-policy-cont{
+    background-color: $main-green-dark;
+}
+
+#footer-policy-cont a:hover{
+    color: black;
+    text-decoration: none;
+}
+
+#footer-links-cont ul{
+    list-style: none;
+    
+}
+#footer-policy-cont ul{
+    list-style: none;
+    margin: 0;
+}
+.footer-links-left{
+    float: left;
+    margin: 0;
+    width: fit-content;
+    display: inline;
+}
+#footer-policy-cont li, .footer-links-left li{
+    display: inline;
+    margin-right: 15px;
 }
 
 
+#footer-policy-cont a:hover,#footer-policy-cont li p:hover{
+    opacity: 1;
+}
+#footer-policy-cont a,#footer-policy-cont li p{
+    margin: 0;
+    color: white;
+    width: fit-content;
+    cursor: pointer;
+    opacity: 0.5;
+    display: inherit;
+}
+
+.footer-links-right{
+    float: right;
+    margin: 0;
+    width: fit-content;
+}
+.footer-links-right li{
+    display: inline;
+    margin-right: 15px;
+}
+.fa-facebook-f{
+    color: blue;
+}
+
+.fa-twitter{
+    color:#0fb5e6
+}
+.fa-pinterest{
+    color:red
+}
+footer .fab:hover{
+    color: white;
+    font-size: 1.2rem;
+}
+//home page neds
+.list-item{
+    width: 50%;
+}
 
 
 // messages
