@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserLoginController;
 use App\Http\Controllers\Auth\UserRegisterController;
 use App\Http\Controllers\User\StreamController;
+use App\Http\Controllers\Consultant\StreamController as ConsultantStreamController;
 
 
 Route::get('/', function () {
@@ -17,7 +18,6 @@ Route::get('/home', function () {
 })->middleware(["auth"])->name("home");
 
 Route::get("/user/stream",[StreamController::class,"index"])->name("user-stream-view");
-
 
 // Authentication for users
 Route::get('/login',[ UserLoginController::class,"showLogin"])->name("login-view");
@@ -34,6 +34,9 @@ Route::post('/logout',[UserLoginController::class,"logout"])->name("logout");
 Route::get('/dashboard', function () {
     return view('Consultant/home');
 })->middleware(["auth:cons"])->name("dashboard");
+
+Route::get("/consultant/stream",[ConsultantStreamController::class,"index"])->name("consultant-stream-view");
+
 
 
 //Authentications for consultants

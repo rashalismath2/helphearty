@@ -27,6 +27,7 @@ Route::prefix('user')->group(function () {
     Route::get("/messages",[MessagesController::class,"GetConversationWithConsultant"]);
     Route::post("/messages",[MessagesController::class,"SaveConversationWithConsultant"]);
     Route::post("/send-offer",[StreamController::class,"sendOffer"]);
+    Route::post("/call-cons",[StreamController::class,"callCons"]);
 
 });
 
@@ -34,6 +35,7 @@ Route::prefix('consultant')->group(function () {
     Route::get("/messages",[ConsMessageController::class,"GetConversationWithUsers"]);
     Route::post("/messages",[ConsMessageController::class,"SaveConversationWithUser"]);
     Route::post("/send-answer",[ConsStreamController::class,"sendAnswer"]);
+    Route::post("/answer-call",[ConsStreamController::class,"sendCallAcceptance"]);
 });
 
 Route::post("/getAcessToken",[UserLoginController::class,"getAcessToken"])->name("get_access_token");

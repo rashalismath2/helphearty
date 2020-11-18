@@ -17,14 +17,17 @@
                     id:""
                  },
                 message:"",
-                selectedUser:""
+                selectedUser:"",
+                hasCall:false,
+                userInCall:{},
+                userInCall:false
             }
         }
  
         componentDidMount(){
             // get access token, then set it in local storages, then getg all the messages, then listen to messaegs
             this.getAccessToken()
-      
+            
 
         }
 
@@ -36,6 +39,7 @@
             .then(res=>{
                 localStorage.setItem("api_token", res.data.api_token)
                 //get all the conversations
+                // TODO- implement promises 
                 this.getAllTheConversations(res)
                 
             })
@@ -52,12 +56,27 @@
                     this.setState({
                         consultant:res.data
                     })
+                    localStorage.setItem("user_id",res.data.id)
+                    // TODO- implement promises 
                     this.listenFoConsultantMessages();
-                    this.listenForStreamOffers()
+                    this.listenForCalls()
                 })
                 .catch(e=>{
                     console.log(e)
                 })
+        }
+
+        listenForCalls(){
+            Echo.connector.pusher.config.auth.headers['Authorization'] = `Bearer ${localStorage.getItem("api_token")}`;
+            Echo.private("CallFrom-user-toId-"+this.state.consultant.id)
+            .listen('InitCall', (call) => {
+
+                this.setState({
+                    hasCall:true,
+                    userInCall:call.user
+                })
+                localStorage.setItem("userInCallId",call.user.id)
+            });
         }
 
         listenFoConsultantMessages(){
@@ -86,36 +105,7 @@
                     });
         }
 
-         listenForStreamOffers(){
-           
-                Echo.connector.pusher.config.auth.headers['Authorization'] = `Bearer ${localStorage.getItem("api_token")}`;
-                Echo.private("offerFrom-user-toId-"+this.state.consultant.id)
-                .listen('OfferSend',async (res) => {
-                    console.log("offer ",res.offer)
-                    const configuration=null
-                    
-                    const peerConnection = new RTCPeerConnection(configuration);
-                    
-                    await peerConnection.setRemoteDescription(new RTCSessionDescription(JSON.parse(res.offer)));
-                    
-                    const answer = await peerConnection.createAnswer();
-                    await peerConnection.setLocalDescription(answer);
-                    
-                    axios.post("/api/consultant/send-answer",{
-                        answer:answer,
-                        toId:res.user.id
-                    },{
-                        headers: { Authorization: `Bearer ${localStorage.getItem("api_token")}`}
-                    })
-                    .then(res=>{
-                        console.log(res)
-                    })
-                    .catch(err=>{
-                        console.error("Sending answer error in consultant ",err)
-                    })
-                })
-
-        }
+      
 
         setText=(e)=>{
             this.setState({
@@ -160,10 +150,25 @@
             
         }
 
+        answerCall=()=>{
+            this.setState({
+                hasCall:false
+            })
+            window.open("/consultant/stream");
+        }
+
         render(){
             var users=""
             var selectedUserMessages=""
+            var callPop=""
             
+            if(this.state.hasCall){
+                callPop=<div className="bg-success">
+                        <p>Call from {this.state.userInCall.email}</p>
+                        <button onClick={this.answerCall}>Answer</button> 
+                        <button>Decline</button> 
+                    </div>
+            }
 
             if(this.state.selectedUser!=""){
                selectedUserMessages=  <div className="messages-master-cont">
@@ -222,7 +227,8 @@
            }
 
             return(
-                <div class="clearfix" id="chat-cont">
+                <div class="clearfix" id="chat-cont">  
+                    {callPop}
                    {users}    
                    {selectedUserMessages}
                 </div>

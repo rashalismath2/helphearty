@@ -52,3 +52,17 @@ Broadcast::channel('offerFrom-user-toId-{userId}', function ($user,$userId) {
  
 } ,['guards' => ['consapi']]);
 
+//Listening for calls from the user in consultant
+Broadcast::channel('CallFrom-user-toId-{userId}', function ($user,$userId) {
+        //if user was the one sent the message, we should check if we have the correct consultant 
+        return $user->id===(int)$userId;        
+ 
+} ,['guards' => ['consapi']]);
+
+
+//Listening for  acceptance calls from the cons 
+Broadcast::channel('acceptCall-toId-{userId}', function ($user,$userId) {
+        return $user->id===(int)$userId;        
+ 
+} ,['guards' => ['api']]);
+
