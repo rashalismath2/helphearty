@@ -17,6 +17,10 @@ class Consultant extends Authenticatable
     {
         return $this->hasMany('App\Models\User', 'consultant_id', 'id');
     }
+    public function questions()
+    {
+        return $this->hasMany('App\Models\Question', 'cons_id', 'id');
+    }
 
   
 
